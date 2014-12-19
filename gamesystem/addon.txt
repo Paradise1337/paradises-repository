@@ -1,0 +1,10 @@
+"AddonInfo"
+{
+	"name" "Game system for JailBreak"
+	"author_name" "Paradise1337"
+	"info" " { 	
+		"description": "GameSystem", 	
+		"type": "addon",	
+		"tags":  	[ "addon" ] 
+	}"
+}
