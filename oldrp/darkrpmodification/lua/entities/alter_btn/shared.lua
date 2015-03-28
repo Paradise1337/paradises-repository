@@ -12,5 +12,5 @@ ENT.Category = "DarkRP"
 ENT.AdminSpawnable = false
 
 function ENT:SetupDataTables()
-	--self:NetworkVar("Bool",0,"bom")
+	self:NetworkVar("String",0,"Data")
 end

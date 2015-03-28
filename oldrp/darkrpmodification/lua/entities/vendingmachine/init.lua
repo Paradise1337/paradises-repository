@@ -69,6 +69,14 @@ function ENT:Use(activator,caller)
 		self:createWater()
 		self.locked = false
 		self:EmitSound("buttons/button4.wav")
+		if activator:IsSuperVIP() then
+			self.locked = true
+			timer.Create(self:EntIndex().."water", 1, 1, function()
+				self:createWater()
+				self.locked = false
+				self:EmitSound("buttons/button4.wav")
+			end)
+		end
 	end)
 end
 

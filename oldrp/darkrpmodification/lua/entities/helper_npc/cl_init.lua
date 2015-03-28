@@ -66,8 +66,7 @@ local function helpMenu()
 	local btns = {
 		{'Правила', '_npc_helps_laws', Color(200, 25, 25, 255)},
 		{'Донат', '_npc_helps_donat', Color(75, 0, 150, 255)},
-		{'Steam Группа', '_npc_helps_goto-steam', Color(75, 200, 75, 255)},
-		{'[H] Принтер', '_npc_helps_mp', Color(255, 60, 0, 255)},
+		--{'Steam Группа', '_npc_helps_goto-steam', Color(75, 200, 75, 255)},
 		{'ВКонтакте', '_npc_helps_goto-vk', Color(0, 60, 255, 255)},
 	}
 	local main = vgui.Create('DFrame')
@@ -133,65 +132,6 @@ local function helpMenu()
 end
 concommand.Add("heeelps", helpMenu)
 
-local function st()
-	local ply, x, y = LocalPlayer(), ScrW(), ScrH()
-	local main = vgui.Create('DFrame')
-	main:SetSize(x, 500)
-	main:SetPos(0, y / 2 - 250)
-	main:MakePopup()
-	main.startTime = SysTime()
-	main:SetTitle('')
-	main:ShowCloseButton(false)
-	main:SetDraggable(false)
-	main.Paint = function(self, w, h)
-		Derma_DrawBackgroundBlur(self, self.startTime)
-		draw.RoundedBox(0, 0, 0, w, h, Color(200, 200, 200, 255));
-		draw.RoundedBox(0, 0, 0, w, 75, Color(35, 35, 35, 255));
-		draw.RoundedBox(0, w/2-400+1, 0, 800-2, 75-1, Color(0, 125, 255, 255));
-		draw.SimpleTextOutlined( '[Help] Денежный принтер', "npchelper2", w/2, 75/2, Color( 255, 255, 255, 255 ), 1, 1, 1, Color(0, 0, 0, 200))	
-	end
-	main['close'] = vgui.Create('DButton', main)
-	main['close']:SetSize(30,15)
-	main['close']:SetPos(x-80,0)
-	main['close']:SetText("")
-	main['close'].Paint = function(self, w, h)
-		draw.RoundedBox(0, 0, 0, w, h, Color(255, 255, 255, 255));
-		draw.SimpleTextOutlined( 'X', "npchelper3", w/2, h/2, Color( 255, 255, 255, 255 ), 1, 1, 1, Color(0, 0, 0, 255))	
-	end
-	main['close'].DoClick = function()
-		main:Close()
-	end
-	
-	main['fake'] = vgui.Create('DButton', main)
-	main['fake']:SetSize(30,15)
-	main['fake']:SetPos(x-80-35,0)
-	main['fake']:SetText("")
-	main['fake']:SetDisabled(true)
-	main['fake'].Paint = function(self, w, h)
-		draw.RoundedBox(0, 0, 0, w, h, Color(225, 225, 225, 255));
-		draw.SimpleTextOutlined( '_', "npchelper3", w/2, h/2, Color( 255, 255, 255, 255 ), 1, 1, 1, Color(0, 0, 0, 255))	
-	end
-	url = vgui.Create('DPanel', main)
-	url:SetSize(1000, 400)
-	url:SetPos(x/2-500, 90)
-	url.Paint = function(self, w, h)
-		draw.SimpleTextOutlined( 'Формулы принтера', "npchelper2", w/2, 5, Color( 255, 255, 255, 255 ), 1, 2, 1, Color(0, 0, 0, 200))	
-		draw.SimpleTextOutlined( '1 куллер = 3 ячейки охлождения', "npchelper4", w/2, 50, Color( 0, 150, 25, 255 ), 1, 2, 1, Color(0, 0, 0, 200))	
-		draw.SimpleTextOutlined( '1 краска занимает 1 ячейку охлождения', "npchelper4", w/2, 50+22, Color( 255, 50, 50, 255 ), 1, 2, 1, Color(0, 0, 0, 200))	
-		draw.SimpleTextOutlined( '1 диск занимает пол ячейки охлаждения', "npchelper4", w/2, 50+22*2, Color( 255, 50, 50, 255 ), 1, 2, 1, Color(0, 0, 0, 200))	
-		draw.SimpleTextOutlined( '1 процессор занимает 2 ячейки охлаждения', "npchelper4", w/2, 50+22*3, Color( 255, 50, 50, 255 ), 1, 2, 1, Color(0, 0, 0, 200))	
-	end
-	/*url:SetHTML('\
-		<center><b>Формулы принтера</b><br>\
-		1 куллер = 3 ячейки охллждения<br>\
-		1 краска занимает 1 ячейку охлождения<br>\
-		1 диск занимает пол ячейки охлаждения<br>\
-		1 процессор занимает 2 ячейки охлаждения<br>\
-		</center>\
-	')*/
-end
-concommand.Add("_npc_helps_mp", st)
-
 local function vk()
 	local ply, x, y = LocalPlayer(), ScrW(), ScrH()
 	local main = vgui.Create('DFrame')
@@ -233,7 +173,7 @@ local function vk()
 	url = vgui.Create('HTML', main)
 	url:SetSize(1000, 400)
 	url:SetPos(x/2-500, 90)
-	url:OpenURL('http://vk.com/oldr_p')
+	url:OpenURL('http://vk.com/expansiveworld')
 end
 concommand.Add("_npc_helps_goto-vk", vk)
 

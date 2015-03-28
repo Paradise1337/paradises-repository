@@ -26,7 +26,7 @@ AddCustomShipment('.338 AI AWM', {
 	seperate = false,
 	pricesep = 200,
 	noship = false,
-	allowed = {TEAM_BLACK},
+	allowed = {TEAM_BMD},
 })
 
 AddCustomShipment('.45 HK UMP-45', {
@@ -92,7 +92,7 @@ AddCustomShipment('5.56MM M249 SAW', {
 	seperate = false,
 	pricesep = 200,
 	noship = false,
-	allowed = {TEAM_BLACK},
+	allowed = {TEAM_BMD},
 })
 
 AddCustomShipment('5.56X39MM STEYR AUG A1', {
@@ -202,7 +202,7 @@ AddCustomShipment('AR-2 PULSE-RIFLE', {
 	seperate = false,
 	pricesep = 200,
 	noship = false,
-	allowed = {TEAM_BLACK},
+	allowed = {TEAM_BMD},
 })
 
 AddCustomShipment('BENELLI M4 SUPER 90', {
@@ -235,7 +235,7 @@ AddCustomShipment('EXPLOSIVE C4', {
 	seperate = false,
 	pricesep = 200,
 	noship = false,
-	allowed = {TEAM_BLACK},
+	allowed = {TEAM_BMD},
 })
 
 AddCustomShipment('HUNTING CROSSBOW', {
@@ -246,7 +246,7 @@ AddCustomShipment('HUNTING CROSSBOW', {
 	seperate = false,
 	pricesep = 200,
 	noship = false,
-	allowed = {TEAM_BLACK},
+	allowed = {TEAM_BMD},
 })
 
 AddCustomShipment('KNIFE', {
@@ -257,7 +257,7 @@ AddCustomShipment('KNIFE', {
 	seperate = false,
 	pricesep = 200,
 	noship = false,
-	allowed = {TEAM_BLACK, TEAM_GUN, TEAM_MOBS},
+	allowed = {TEAM_BMD, TEAM_GUN, TEAM_MOBS},
 })
 
 AddCustomShipment('4.6MM HK MP7A1', {
@@ -268,5 +268,17 @@ AddCustomShipment('4.6MM HK MP7A1', {
 	seperate = false,
 	pricesep = 200,
 	noship = false,
-	allowed = {TEAM_BLACK},
+	allowed = {TEAM_BMD},
 })
+
+AddCustomShipment('Отмычка', {
+	model = 'models/weapons/w_crowbar.mdl',
+	entity = 'lockpick',
+	price = 5000,
+	amount = 5,
+	seperate = false,
+	pricesep = 200,
+	noship = false,
+	allowed = {TEAM_BMD},
+})
+

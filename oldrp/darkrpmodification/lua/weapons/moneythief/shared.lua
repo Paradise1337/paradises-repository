@@ -75,6 +75,10 @@ function SWEP:PrimaryAttack()
 	if not IsValid(trace.Entity) or not trace.Entity:IsPlayer() or trace.Entity:GetPos():Distance(self.Owner:GetPos()) > 100 then
 		return
 	end
+	if (trace.Entity.thief) then
+		DarkRP.notify( self.Owner, 2, 4, "Его уже обокрали!" )
+		return
+	end
 
 	if SERVER then
 		self.IsMoneyThiefNow = true
@@ -106,11 +110,14 @@ function SWEP:Succeed()
 	if not IsValid(victim) or not victim:IsPlayer() then return end
 	local Money = math.random(0,200)
 	if victim:getDarkRPVar("money") < Money then return end
-	if CurTime() == time then
+	--if CurTime() == time then
 		self.Owner:addMoney(Money)
 		victim:addMoney(-Money)
-	end
+		victim.thief = true
+	--end
 	DarkRP.notify( self.Owner, 2, 4, "Вы украли: $"..Money )
+	DarkRP.notify( victim, 2, 4, "У вас спиздили $"..Money )
+	timer.Create("thief"..victim:UniqueID(), 60, 1, function() if IsValid(victim) then victim.thief = false end end)
 end
 
 function SWEP:Fail()

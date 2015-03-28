@@ -9,7 +9,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 local links = {
 	steam = 'steamcommunity.com/groups/OLDR-P',
-	vk = 'vk.com/oldr_p',
+	vk = 'http://vk.com/expansiveworld',
 	owner = 'http://vk.com/m_e_t_r_o_2_0_3_3',
 	par = 'http://vk.com/Paradise-1337',
 	don = 'http://vk.com/page-89839485_50901279',
@@ -22,11 +22,11 @@ function ENT:Initialize()
 	self:SetUseType(SIMPLE_USE)
 	local phys = self:GetPhysicsObject()
 	phys:Wake()
-	self:SetNWString('data', '')
+	self:SetData('')
 end
 
 function ENT:Use(activator,caller)
-	activator:ChatPrint(links[self:GetNWString('data')])
+	activator:ChatPrint(links[self:GetData()])
 	activator:SendLua("gui.OpenURL('"..self:GetNWString('data').."')")
 end
 
@@ -44,7 +44,7 @@ local function SaveItems()
 		for r, e in pairs(ents.FindByClass(tostring(v))) do
 			local pos = e:GetPos()
 			local ang = e:GetAngles()
-			local data = e:GetNWString('data')
+			local data = e:GetData()
 			table.insert( itemTable, {pos, ang, v, data} )  
 			if (r == #ents.FindByClass(tostring(v))) then
 				compTable = pon.encode( itemTable )
@@ -66,7 +66,7 @@ local function LoadItems()
 			ent[""..k]:SetAngles(v[2])
 			ent[""..k]:Spawn()
 			ent[""..k]:Activate()
-			ent[""..k]:SetNWString('data', v[4])
+			ent[""..k]:SetData(v[4])
 			local phys = ent[""..k]:GetPhysicsObject()
 			phys:EnableMotion(false) 
 		end
@@ -95,6 +95,6 @@ end)
 
 concommand.Add('MB__Set', function(ply, _, args)
 	if ply:IsSuperAdmin() and ply:GetEyeTrace().Entity:GetClass() == 'alter_btn' then
-		ply:GetEyeTrace().Entity:SetNWString('data', args[1])
+		ply:GetEyeTrace().Entity:SetData(args[1])
 	end
 end)

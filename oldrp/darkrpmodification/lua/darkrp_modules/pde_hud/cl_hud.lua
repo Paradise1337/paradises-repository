@@ -1,9 +1,12 @@
+-- Disable Croshire
+
 local hideHUDElements = {
 	["DarkRP_HUD"] = true,
 	["DarkRP_EntityDisplay"] = true,
 	["DarkRP_ZombieInfo"] = false,
 	["DarkRP_LocalPlayerHUD"] = true,
-	["DarkRP_Agenda"] = true
+	["DarkRP_Agenda"] = true,
+	["DarkRP_Hungermod"] = true
 }
 
 local tohide = { -- This is a table where the keys are the HUD items to hide
@@ -28,7 +31,7 @@ hook.Add("HUDShouldDraw", "HideDefaultDarkRPHud", function(name)
 end)
 local ConVars = {}
 
-local function ReloadConVars()
+local function ReloadConVars() 
 	ConVars = {
 		background = {0,0,0,100},
 		Healthbackground = {0,0,0,200},
@@ -107,11 +110,11 @@ local clr = {
 }
 local id = 1
 local RCSPEC = table.Random(clr)
-_NextChangeColor = CurTime() + 60
+_NextChangeColor = CurTime() + 10
 
 hook.Add('Think', 'TimeToChangeColor', function()
 	if _NextChangeColor > CurTime() then return end
-	_NextChangeColor = CurTime() + 60
+	_NextChangeColor = CurTime() + 10
 	RCSPEC = table.Random(clr)
 end)
 
@@ -121,8 +124,32 @@ local function StartHUD()
 	local ply = LocalPlayer()
 	local x, y = ScrW(), ScrH() 
 	pde_hud_icon:SetPlayer( LocalPlayer(), 64 )
-
+	LocalPlayer():ConCommand("mad_crosshair_t 0")
+	
 	if !IsValid(ply) then return end
+
+	do -- Crosshire 
+		draw.RoundedBox(0, x/2+6, y/2+4, 4, 4, Color(0, 0, 0, 200));
+		draw.RoundedBox(0, x/2-6, y/2+4, 4, 4, Color(0, 0, 0, 200));
+		draw.RoundedBox(0, x/2, y/2-6, 4, 4, Color(0, 0, 0, 200));
+		draw.RoundedBox(0, x/2+6+1, y/2+4+1, 2, 2, Color(255, 255, 255, 255));
+		draw.RoundedBox(0, x/2-6+1, y/2+4+1, 2, 2, Color(255, 255, 255, 255));
+		draw.RoundedBox(0, x/2+1, y/2-6+1, 2, 2, Color(255, 255, 255, 255));
+		if !ply:GetEyeTrace().Entity:IsWorld() then
+			draw.RoundedBox(0, x/2+6+1, y/2+4+1, 2, 2, Color(180, 60, 60, 255));
+			draw.RoundedBox(0, x/2-6+1, y/2+4+1, 2, 2, Color(180, 60, 60, 255));
+			draw.RoundedBox(0, x/2+1, y/2-6+1, 2, 2, Color(180, 60, 60, 255));
+		end
+	end
+
+	local _RCSPEC = Color(0,0,0,255)
+	do
+		sc_R = Lerp( 2 * FrameTime(), sc_R or 0, RCSPEC.r or 0)
+		sc_G = Lerp( 2 * FrameTime(), sc_G or 0, RCSPEC.g or 0)
+		sc_B = Lerp( 2 * FrameTime(), sc_B or 0, RCSPEC.b or 0)
+		_RCSPEC = Color(sc_R, sc_G, sc_B, 255)
+	end
+	
 	local hp = math.Clamp(ply:Health(),0,100) -- Health
 	hr = Lerp( 2 * FrameTime(), hr or 0, hp or 0)
 	
@@ -162,7 +189,7 @@ local function StartHUD()
 		spsize1 = 0
 	end
 	
-	draw.SimpleTextOutlined( ply:Name(), "hudUI2", 10 + 2+2+65, y-10-10-64 - 10, RCSPEC or Color(255,255,255,255), 0, 0, 1, Color(0,0,0,200) )
+	draw.SimpleTextOutlined( ply:Name(), "hudUI2", 10 + 2+2+65, y-10-10-64 - 10, _RCSPEC or Color(255,255,255,255), 0, 0, 1, Color(0,0,0,200) )
 	draw.SimpleTextOutlined( tostring(ply:getDarkRPVar("job")), "hudUI1", 10 + 2+2+65, y-10-10-70+25 - 10, Color(255,255,255,255), 0, 0, 1, Color(0,0,0,200) )
 	draw.SimpleTextOutlined( 'Зар-плата: '..DarkRP.formatMoney(ply:getDarkRPVar("salary"))..'  Бумажник: '..DarkRP.formatMoney(isnumber(hm) and math.ceil(hm) or 0), "hudUI3", 10 + 2+2+65, y-36-10 - 10, Color(255,255,255,255), 0, 0, 1, Color(0,0,0,200) )
 	
@@ -209,12 +236,79 @@ local function StartHUD()
 	if ply:SteamID() == 'STEAM_0:0:63982236' then
 		draw.SimpleText("*Айм секси энд ю ноу ит* by Paradise", "hudUI2", 20, 20, Color(255,255,255,255), 0, 0);
 	end
+
+	/* 		---		---		 */
+	if !ply:GetEyeTrace().Entity:isDoor() then return end
+	if ply:GetPos():Distance(ply:GetEyeTrace().Entity:GetPos()) > 250 then return end
+	local blocked = ply:GetEyeTrace().Entity:getKeysNonOwnable()
+	local superadmin = LocalPlayer():IsSuperAdmin()
+	local doorTeams = ply:GetEyeTrace().Entity:getKeysDoorTeams()
+	local doorGroup = ply:GetEyeTrace().Entity:getKeysDoorGroup()
+	local playerOwned = ply:GetEyeTrace().Entity:isKeysOwned() or table.GetFirstValue(ply:GetEyeTrace().Entity:getKeysCoOwners() or {}) ~= nil
+	local owned = playerOwned or doorGroup or doorTeams
+
+	local doorInfo = {}
+
+	local title = ply:GetEyeTrace().Entity:getKeysTitle()
+	if title then table.insert(doorInfo, title) end
+
+	if owned then
+		table.insert(doorInfo, DarkRP.getPhrase("keys_owned_by"))
+	end
+
+	if playerOwned then
+		if ply:GetEyeTrace().Entity:isKeysOwned() then table.insert(doorInfo, ply:GetEyeTrace().Entity:getDoorOwner():Nick()) end
+		for k,v in pairs(ply:GetEyeTrace().Entity:getKeysCoOwners() or {}) do
+			local ent = Player(k)
+			if not IsValid(ent) or not ent:IsPlayer() then continue end
+			table.insert(doorInfo, ent:Nick())
+		end
+
+		local allowedCoOwn = ply:GetEyeTrace().Entity:getKeysAllowedToOwn()
+		if allowedCoOwn and not fn.Null(allowedCoOwn) then
+			table.insert(doorInfo, DarkRP.getPhrase("keys_other_allowed"))
+
+			for k,v in pairs(allowedCoOwn) do
+				local ent = Player(k)
+				if not IsValid(ent) or not ent:IsPlayer() then continue end
+				table.insert(doorInfo, ent:Nick())
+			end
+		end
+	elseif doorGroup then
+		table.insert(doorInfo, doorGroup)
+	elseif doorTeams then
+		for k, v in pairs(doorTeams) do
+			if not v or not RPExtraTeams[k] then continue end
+
+			table.insert(doorInfo, RPExtraTeams[k].name)
+		end
+	elseif blocked and superadmin then
+		table.insert(doorInfo, DarkRP.getPhrase("keys_allow_ownership"))
+	elseif not blocked then
+		table.insert(doorInfo, DarkRP.getPhrase("keys_unowned"))
+		if superadmin then
+			table.insert(doorInfo, DarkRP.getPhrase("keys_disallow_ownership"))
+		end
+	end
+
+	if ply:GetEyeTrace().Entity:IsVehicle() then
+		for k,v in pairs(player.GetAll()) do
+			if v:GetVehicle() ~= ply:GetEyeTrace().Entity then continue end
+
+			table.insert(doorInfo, DarkRP.getPhrase("driver", v:Nick()))
+			break
+		end
+	end
+
+	local x, y = ScrW()/2, ScrH() / 2
+	draw.DrawNonParsedText(table.concat(doorInfo, "\n"), "DarkRPHUD1", x , y +1+20 , black, 1)
+	draw.DrawNonParsedText(table.concat(doorInfo, "\n"), "DarkRPHUD1", x, y+20, (blocked or owned) and white or red, 1)
 end
 
 local agendaText
 local function Agenda()
-	local shouldDraw = hook.Call("HUDShouldDraw", GAMEMODE, "DarkRP_Agenda")
-	if shouldDraw == false then return end
+	--local shouldDraw = hook.Call("HUDShouldDraw", GAMEMODE, "DarkRP_Agenda")
+	--if shouldDraw == false then return end
 
 	local agenda = LocalPlayer():getAgendaTable()
 	if not agenda then return end
@@ -311,12 +405,12 @@ local tab = {
 	[ "$pp_colour_mulb" ] = 0
 }
 
-function GM:RenderScreenspaceEffects()
+hook.Add("RenderScreenspaceEffects", "Render", function()
 	if LocalPlayer():Health() < 5 then
 		DrawColorModify(tab)
 		DrawMotionBlur(0.4, 0.8, 0.09)
 	end
-end
+end)
 
 hook.Remove("PostDrawOpaqueRenderables", "PlayerNames")
 
@@ -337,16 +431,10 @@ surface.CreateFont("hudUI01", {
 		scanlines = 0, 
 		antialias = true, 
 });
-/*
-local spnames = {
-	{'Это разработчик, не пристовайте к нему!', Color(200, 80, 80), 'STEAM_0:1:36683642'},
-	{'Няшка, потому-что создатель', Color(200, 80, 80), 'STEAM_0:0:3464088'},
-}*/
 
 local function DrawName( ply )
 	local spnames = {
-		{'Это разработчик, не пристовайте к нему!', Color(200, 80, 80), 'STEAM_0:1:36683642'},
-		{'Няшка, потому-что создатель', Color(200, 80, 80), 'STEAM_0:0:3464088'},
+		{'Это разработчик, и он няшка, ток бывает злой ^_^', Color(200, 80, 80), 'STEAM_0:1:36683642'},
 	}
 	if !ply:Alive() or ply == LocalPlayer() then return end
  	if ply:GetPos():Distance(LocalPlayer():GetPos()) > 300 then return end
@@ -380,3 +468,13 @@ local function DrawName( ply )
  
 end
 hook.Add( "PostPlayerDraw", "DrawName", DrawName )
+
+local function DisplayNotify(msg)
+	local txt = msg:ReadString()
+	GAMEMODE:AddNotify(txt, msg:ReadShort(), msg:ReadLong())
+	surface.PlaySound("buttons/lightswitch2.wav")
+
+	-- Log to client console
+	print(txt)
+end
+usermessage.Hook("_Notify", DisplayNotify) 

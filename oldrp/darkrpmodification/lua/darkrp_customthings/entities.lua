@@ -35,7 +35,7 @@ DarkRP.createEntity("Улучшаемый Денежный Принтер", {
 
 DarkRP.createEntity("Гриб", {
 	ent = "durgz_mushroom",
-	model = "models/ipha/mushroom_small.mdl",
+	model = "models/items/cs_gift.mdl",
 	price = 1500,
 	max = 1,
 	cmd = "buymushroom",
@@ -44,7 +44,7 @@ DarkRP.createEntity("Гриб", {
 
 DarkRP.createEntity("Аспирин", {
 	ent = "durgz_aspirin",
-	model = "models/jaanus/aspbtl.mdl",
+	model = "models/items/cs_gift.mdl",
 	price = 500,
 	max = 1,
 	cmd = "buyaspirin",
@@ -55,7 +55,7 @@ DarkRP.createEntity("Аспирин", {
 
 DarkRP.createEntity("Сигареты", {
 	ent = "durgz_cigarette",
-	model = "models/boxopencigshib.mdl",
+	model = "models/items/cs_gift.mdl",
 	price = 300,
 	max = 1,
 	cmd = "buycigarette",
@@ -66,18 +66,18 @@ DarkRP.createEntity("Сигареты", {
 
 DarkRP.createEntity("Кокаин", {
 	ent = "durgz_cocaine",
-	model = "models/cocn.mdl",
+	model = "models/items/cs_gift.mdl",
 	price = 10000,
 	max = 1,
 	cmd = "buycocaine",
-	allowed = TEAM_BLACK
+	allowed = TEAM_BMD
 })
 
 
 
 DarkRP.createEntity("Героин", {
 	ent = "durgz_heroine",
-	model = "models/katharsmodels/syringe_out/syringe_out.mdl",
+	model = "models/items/cs_gift.mdl",
 	price = 1000,
 	max = 1,
 	cmd = "buyheroine",
@@ -89,7 +89,7 @@ DarkRP.createEntity("Героин", {
 
 DarkRP.createEntity("Лсд", {
 	ent = "durgz_lsd",
-	model = "models/smile/smile.mdl",
+	model = "models/items/cs_gift.mdl",
 	price = 1200,
 	max = 1,
 	cmd = "buylsd",
@@ -100,7 +100,7 @@ DarkRP.createEntity("Лсд", {
 
 DarkRP.createEntity("Марихуана", {
 	ent = "durgz_weed",
-	model = "models/katharsmodels/contraband/zak_wiet/zak_wiet.mdl",
+	model = "models/items/cs_gift.mdl",
 	price = 1100,
 	max = 1,
 	cmd = "buyweed",
@@ -110,7 +110,7 @@ DarkRP.createEntity("Марихуана", {
 
 DarkRP.createEntity("П.К.П", {
 	ent = "durgz_pcp",
-	model = "models/marioragdoll/super mario galaxy/star/star.mdl",
+	model = "models/items/cs_gift.mdl",
 	price = 700,
 	max = 1,
 	cmd = "buypcp",
