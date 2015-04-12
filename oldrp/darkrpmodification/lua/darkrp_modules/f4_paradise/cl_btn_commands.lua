@@ -3,6 +3,7 @@ local comGroup = {
 		id = "civil",
 		name = "Гражданские",
 		color = Color(50,150,50),
+		icon = "icon16/user.png",
 		check = function(ply)
 			return true
 		end
@@ -11,6 +12,7 @@ local comGroup = {
 		id = "cp",
 		name = "Для полиции",
 		color = Color(45,115,195),
+		icon = "icon16/user.png",
 		check = function(ply)
 			return ply:isCP()
 		end
@@ -19,6 +21,7 @@ local comGroup = {
 		id = "mayor",
 		name = "Для мэра",
 		color = Color(155,45,45),
+		icon = "icon16/user.png",
 		check = function(ply)
 			return ply:isMayor()
 		end

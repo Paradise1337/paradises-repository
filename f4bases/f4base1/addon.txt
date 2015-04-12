@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+	"name"				"F4 Base"
+	"version"			"0.01 BETA"
+	"up_date"			"03/28/15"
+	"author_name"			"Paradise's studio"
+	"author_email"			"paradise1337@rambler.ru"
+	"author_url"			""
+	"info"				"For developers"
+	"override"			"0"
+}
